@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-09-07T22:32:23.783114-03:00 by Eclipse SUMO netedit 1.27.1
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <!-- Vehicles, persons and containers (sorted by depart) -->
+    <trip id="t_0" depart="0.00" from="E0" to="E2"/>
+    <trip id="t_1" depart="0.00" from="E0" to="E1"/>
+    <trip id="t_2" depart="0.00" from="-E2" to="E3"/>
+    <trip id="t_3" depart="0.00" from="-E2" to="E1"/>
+    <trip id="t_4" depart="0.00" from="-E1" to="-E0"/>
+    <trip id="t_5" depart="0.00" from="-E1" to="E3"/>
+    <trip id="t_6" depart="0.00" from="-E3" to="-E0"/>
+    <trip id="t_7" depart="0.00" from="-E3" to="E2"/>
+
+
+    <!-- =================================================================== -->
+    <!-- BLOCO 1: MADRUGADA / TRÂNSITO FLUIDO (0s a 3.600s - 1 Hora)         -->
+    <!-- =================================================================== -->
+    <flow id="f_0_b1" begin="0.00" end="3600.00" vehsPerHour="350" from="E0" to="E2"/>
+    <flow id="f_1_b1" begin="0.00" end="3600.00" vehsPerHour="250" from="E0" to="E1"/>
+    <flow id="f_2_b1" begin="0.00" end="3600.00" vehsPerHour="150" from="-E2" to="E3"/>
+    <flow id="f_3_b1" begin="0.00" end="3600.00" vehsPerHour="100" from="-E2" to="E1"/>
+    <flow id="f_4_b1" begin="0.00" end="3600.00" vehsPerHour="300" from="-E1" to="-E0"/>
+    <flow id="f_5_b1" begin="0.00" end="3600.00" vehsPerHour="200" from="-E1" to="E3"/>
+    <flow id="f_6_b1" begin="0.00" end="3600.00" vehsPerHour="120" from="-E3" to="-E0"/>
+    <flow id="f_7_b1" begin="0.00" end="3600.00" vehsPerHour="180" from="-E3" to="E2"/>
+
+    <!-- =================================================================== -->
+    <!-- BLOCO 2: PICO DA MANHÃ - INTENSO (3.600s a 9.000s - 1,5 Hora)       -->
+    <!-- =================================================================== -->
+    <!-- Eixo E0/E1 (Marginal Sentido Principal): ~3.200 veh/h no total -->
+    <flow id="f_0_b2" begin="3600.00" end="9000.00" vehsPerHour="1900" from="E0" to="E2"/>
+    <flow id="f_1_b2" begin="3600.00" end="9000.00" vehsPerHour="1300" from="E0" to="E1"/>
+    
+    <!-- Eixo Transversal (-E2): ~1.600 veh/h -->
+    <flow id="f_2_b2" begin="3600.00" end="9000.00" vehsPerHour="950" from="-E2" to="E3"/>
+    <flow id="f_3_b2" begin="3600.00" end="9000.00" vehsPerHour="650" from="-E2" to="E1"/>
+    
+    <!-- Eixo -E1/-E0 (Marginal Sentido Oposto): ~2.800 veh/h -->
+    <flow id="f_4_b2" begin="3600.00" end="9000.00" vehsPerHour="1600" from="-E1" to="-E0"/>
+    <flow id="f_5_b2" begin="3600.00" end="9000.00" vehsPerHour="1200" from="-E1" to="E3"/>
+    
+    <!-- Eixo Transversal (-E3): ~1.900 veh/h -->
+    <flow id="f_6_b2" begin="3600.00" end="9000.00" vehsPerHour="800" from="-E3" to="-E0"/>
+    <flow id="f_7_b2" begin="3600.00" end="9000.00" vehsPerHour="1100" from="-E3" to="E2"/>
+
+    <!-- =================================================================== -->
+    <!-- BLOCO 3: ENTREPICO / MEIO-DIA (9.000s a 12.600s - 1 Hora)            -->
+    <!-- =================================================================== -->
+    <flow id="f_0_b3" begin="9000.00" end="12600.00" vehsPerHour="850" from="E0" to="E2"/>
+    <flow id="f_1_b3" begin="9000.00" end="12600.00" vehsPerHour="600" from="E0" to="E1"/>
+    <flow id="f_2_b3" begin="9000.00" end="12600.00" vehsPerHour="400" from="-E2" to="E3"/>
+    <flow id="f_3_b3" begin="9000.00" end="12600.00" vehsPerHour="300" from="-E2" to="E1"/>
+    <flow id="f_4_b3" begin="9000.00" end="12600.00" vehsPerHour="750" from="-E1" to="-E0"/>
+    <flow id="f_5_b3" begin="9000.00" end="12600.00" vehsPerHour="550" from="-E1" to="E3"/>
+    <flow id="f_6_b3" begin="9000.00" end="12600.00" vehsPerHour="350" from="-E3" to="-E0"/>
+    <flow id="f_7_b3" begin="9000.00" end="12600.00" vehsPerHour="450" from="-E3" to="E2"/>
+
+    <!-- =================================================================== -->
+    <!-- BLOCO 4: PICO DA TARDE / SATURAÇÃO (12.600s a 18.000s - 1,5 Hora)   -->
+    <!-- =================================================================== -->
+    <!-- Inversão de fluxo forte (Marginal Sentido Bairro/Saída): ~3.600 veh/h -->
+    <flow id="f_0_b4" begin="12600.00" end="18000.00" vehsPerHour="1400" from="E0" to="E2"/>
+    <flow id="f_1_b4" begin="12600.00" end="18000.00" vehsPerHour="1000" from="E0" to="E1"/>
+    
+    <flow id="f_2_b4" begin="12600.00" end="18000.00" vehsPerHour="800" from="-E2" to="E3"/>
+    <flow id="f_3_b4" begin="12600.00" end="18000.00" vehsPerHour="600" from="-E2" to="E1"/>
+    
+    <!-- Fluxo crítico na via oposta -->
+    <flow id="f_4_b4" begin="12600.00" end="18000.00" vehsPerHour="2200" from="-E1" to="-E0"/>
+    <flow id="f_5_b4" begin="12600.00" end="18000.00" vehsPerHour="1400" from="-E1" to="E3"/>
+    
+    <flow id="f_6_b4" begin="12600.00" end="18000.00" vehsPerHour="900" from="-E3" to="-E0"/>
+    <flow id="f_7_b4" begin="12600.00" end="18000.00" vehsPerHour="1200" from="-E3" to="E2"/>
+
+</routes>
