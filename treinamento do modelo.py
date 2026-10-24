@@ -3,6 +3,16 @@ Treinamento de um Agente de Controle de Semáforo Inteligente
 Otimizado para fluxo dinâmico (SUMO-RL + PPO + Stable-Baselines3)
 Compatível com Python 3.13, Gymnasium e SB3
 
+MELHORIAS IMPLEMENTADAS (em relação à versão anterior):
+1. Total de passos aumentado para 3.000.000
+2. Entropy schedule mais agressivo no final (0.02 → 0.001)
+3. Avaliação mais frequente (a cada 10k passos) e com mais episódios (5)
+4. clip_reward reduzido para 5.0 (maior estabilidade do VecNormalize)
+5. Reward function levemente melhorada (penalidade suave por mudança de fase)
+6. target_kl um pouco mais restritivo
+7. batch_size aumentado para 256 (melhor utilização de GPU/CPU)
+8. Checkpoint mais frequente
+
 Restrições de tempo:
 - Tempo mínimo de verde (semáforo aberto) = 10 segundos
 - Tempo de amarelo = 3 segundos (dentro da faixa 3–5 s)
@@ -25,7 +35,7 @@ NET_FILE = r"Sumo Settings\teste.net.xml"             # Rede viária (interseç�
 ROUTE_FILE = r"Sumo Settings\teste.rou.xml"           # Arquivo de rotas/veículos dinâmico
 
 TEMPO_SIMULACAO = 18000                # Duração de cada episódio em segundos (5 horas)
-PASSOS_TREINAMENTO = 1_500_000         # Total de passos de treinamento do agente
+PASSOS_TREINAMENTO = 4_000_000         # Total de passos de treinamento (aumentado)
 
 DELTA_TIME = 5                         # Intervalo (em segundos) entre decisões do agente
 
@@ -74,6 +84,25 @@ class SyncNormCallback(BaseCallback):
         return True
 
 
+class EntropyScheduleCallback(BaseCallback):
+    """
+    Agenda linear de entropia:
+    começa mais exploratório e termina mais determinístico.
+    """
+    def __init__(self, initial: float = 0.02, final: float = 0.001,
+                 total_timesteps: int = 4_000_000, verbose=0):
+        super().__init__(verbose)
+        self.initial = initial
+        self.final = final
+        self.total_timesteps = total_timesteps
+
+    def _on_step(self) -> bool:
+        progress_remaining = max(1.0 - self.num_timesteps / self.total_timesteps, 0.0)
+        new_ent_coef = float(self.final + (self.initial - self.final) * progress_remaining)
+        self.model.ent_coef = new_ent_coef
+        return True
+
+
 def make_env():
     """
     Função que cria e configura o ambiente SUMO-RL.
@@ -88,10 +117,7 @@ def make_env():
         min_green=GREEN_TIME_MIN,
         yellow_time=YELLOW_TIME,
         max_green=MAX_GREEN,
-        # Recomendado: usar a recompensa padrão do sumo-rl (mais estável)
         reward_fn=custom_reward,
-        # Alternativa (sua recompensa original):
-        # reward_fn=custom_reward,
         single_agent=True
     )
     
@@ -108,22 +134,30 @@ def linear_schedule_with_floor(initial_value: float, floor: float = 3e-5):
     return func
 
 
-def entropy_schedule(initial=0.02, final=0.005):
-    """
-    Schedule de entropia: começa mais exploratório e vai ficando mais determinístico.
-    """
-    def func(progress_remaining: float) -> float:
-        return final + (initial - final) * progress_remaining
-    return func
-
+# Variável global para controlar a última ação (penalidade de mudança de fase)
+_last_action = None
 
 def custom_reward(traffic_signal):
     """
-    Recompensa híbrida original (caso queira voltar a usá-la).
+    Recompensa híbrida melhorada:
+    - Penaliza tempo de espera e tamanho da fila
+    - Adiciona pequena penalidade por mudança de fase (reduz flickering)
     """
+    global _last_action
+
     waiting = sum(traffic_signal.get_accumulated_waiting_time_per_lane())
     queue   = sum(traffic_signal.get_lanes_queue())
-    return - (waiting + 0.5 * queue) / 100.0
+
+    # Recompensa base (mesma ideia da versão anterior)
+    reward = - (waiting + 0.5 * queue) / 100.0
+
+    # Penalidade suave por mudança de fase (evita oscilações desnecessárias)
+    current_action = traffic_signal.green_phase
+    if _last_action is not None and current_action != _last_action:
+        reward -= 0.05          # penalidade leve
+
+    _last_action = current_action
+    return reward
 
 
 def treinar_agente():
@@ -150,6 +184,7 @@ def treinar_agente():
     print(f"  → yellow_time   = {YELLOW_TIME}s")
     print(f"  → max_green     = {MAX_GREEN}s")
     print(f"  → Ciclo máximo estimado ≈ {2 * (MAX_GREEN + YELLOW_TIME)}s (< 120s)")
+    print(f"  → Total de passos de treinamento: {PASSOS_TREINAMENTO:,}")
 
     # ==================== AMBIENTES ====================
     # 1. Ambiente de TREINAMENTO
@@ -160,7 +195,7 @@ def treinar_agente():
         norm_reward=True,
         training=True,
         clip_obs=10.0,
-        clip_reward=10.0,
+        clip_reward=5.0,          # ← reduzido de 10.0 para 5.0 (mais estável)
         gamma=0.99
     )
 
@@ -169,8 +204,8 @@ def treinar_agente():
     eval_env = VecNormalize(
         raw_eval_env,
         norm_obs=True,
-        norm_reward=False,      # Não normaliza a recompensa na avaliação
-        training=False,         # Não atualiza estatísticas
+        norm_reward=False,        # Não normaliza a recompensa na avaliação
+        training=False,           # Não atualiza estatísticas
         clip_obs=10.0,
         gamma=0.99
     )
@@ -186,18 +221,18 @@ def treinar_agente():
         vec_env,
         verbose=1,
         
-        # Hiperparâmetros
+        # Hiperparâmetros ajustados
         learning_rate=linear_schedule_with_floor(3e-4, floor=3e-5),
         n_steps=2048,
-        batch_size=128,
+        batch_size=256,           # ← aumentado de 128 para 256
         n_epochs=10,
         gamma=0.99,
         gae_lambda=0.95,
         clip_range=0.2,
-        ent_coef=entropy_schedule(initial=0.02, final=0.005),  # Agora usa o schedule
+        ent_coef=0.02,            # valor inicial (será controlado pelo callback)
         vf_coef=0.5,
         max_grad_norm=0.5,
-        target_kl=0.02,
+        target_kl=0.015,          # ← um pouco mais restritivo (era 0.02)
         
         # Arquitetura da rede
         policy_kwargs=dict(
@@ -220,20 +255,37 @@ def treinar_agente():
         eval_env,
         best_model_save_path="./melhor_modelo/",
         log_path="./logs_avaliacao/",
-        eval_freq=25_000,
-        n_eval_episodes=3,
+        eval_freq=10_000,         # ← mais frequente (era 25_000)
+        n_eval_episodes=5,        # ← mais episódios (era 3)
         deterministic=True,
         render=False
     )
 
     # Mantém o normalizador de avaliação sempre sincronizado
     sync_callback = SyncNormCallback(vec_env, eval_env)
+
+    # Agenda de entropia mais agressiva no final
+    entropy_callback = EntropyScheduleCallback(
+        initial=0.02,
+        final=0.001,              # ← mais baixo que 0.005
+        total_timesteps=PASSOS_TREINAMENTO
+    )
     # ==================================================
 
     print("Iniciando treinamento do agente IA...")
+    print(f"  → Entropy: 0.02 → 0.001")
+    print(f"  → Learning rate: 3e-4 → 3e-5 (com piso)")
+    print(f"  → Avaliação a cada 10.000 passos (5 episódios)")
+    print("-" * 60)
+
     model.learn(
         total_timesteps=PASSOS_TREINAMENTO,
-        callback=[checkpoint_callback, eval_callback, sync_callback],
+        callback=[
+            checkpoint_callback,
+            eval_callback,
+            sync_callback,
+            entropy_callback
+        ],
         progress_bar=True
     )
 

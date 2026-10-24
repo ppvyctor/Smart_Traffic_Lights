@@ -1,78 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2026-09-07T22:32:23.783114-03:00 by Eclipse SUMO netedit 1.27.1
--->
-
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
-    <!-- Vehicles, persons and containers (sorted by depart) -->
-    <trip id="t_0" depart="0.00" from="E0" to="E2"/>
-    <trip id="t_1" depart="0.00" from="E0" to="E1"/>
-    <trip id="t_2" depart="0.00" from="-E2" to="E3"/>
-    <trip id="t_3" depart="0.00" from="-E2" to="E1"/>
-    <trip id="t_4" depart="0.00" from="-E1" to="-E0"/>
-    <trip id="t_5" depart="0.00" from="-E1" to="E3"/>
-    <trip id="t_6" depart="0.00" from="-E3" to="-E0"/>
-    <trip id="t_7" depart="0.00" from="-E3" to="E2"/>
+    <!-- Cenario em 2 regimes: Av. A (Leste-Oeste: E0 e -E1) e Av. B (Norte-Sul: -E2 e -E3). -->
+    <!-- Valores em veic/h POR APROXIMACAO. Duracao total: 18000 s. -->
 
+    <!-- Aquecimento (0s a 1800s): Av.A=800 veic/h, Av.B=600 veic/h por aproximacao -->
+    <flow id="f_E0_E2_0" begin="0.00" end="1800.00" vehsPerHour="480" from="E0" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_E0_E1_0" begin="0.00" end="1800.00" vehsPerHour="320" from="E0" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_-E0_0" begin="0.00" end="1800.00" vehsPerHour="480" from="-E1" to="-E0" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_E3_0" begin="0.00" end="1800.00" vehsPerHour="320" from="-E1" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E3_0" begin="0.00" end="1800.00" vehsPerHour="360" from="-E2" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E1_0" begin="0.00" end="1800.00" vehsPerHour="240" from="-E2" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_E2_0" begin="0.00" end="1800.00" vehsPerHour="360" from="-E3" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_-E0_0" begin="0.00" end="1800.00" vehsPerHour="240" from="-E3" to="-E0" departLane="best" departSpeed="max"/>
 
-    <!-- =================================================================== -->
-    <!-- BLOCO 1: MADRUGADA / TRÂNSITO FLUIDO (0s a 3.600s - 1 Hora)         -->
-    <!-- =================================================================== -->
-    <flow id="f_0_b1" begin="0.00" end="3600.00" vehsPerHour="350" from="E0" to="E2"/>
-    <flow id="f_1_b1" begin="0.00" end="3600.00" vehsPerHour="250" from="E0" to="E1"/>
-    <flow id="f_2_b1" begin="0.00" end="3600.00" vehsPerHour="150" from="-E2" to="E3"/>
-    <flow id="f_3_b1" begin="0.00" end="3600.00" vehsPerHour="100" from="-E2" to="E1"/>
-    <flow id="f_4_b1" begin="0.00" end="3600.00" vehsPerHour="300" from="-E1" to="-E0"/>
-    <flow id="f_5_b1" begin="0.00" end="3600.00" vehsPerHour="200" from="-E1" to="E3"/>
-    <flow id="f_6_b1" begin="0.00" end="3600.00" vehsPerHour="120" from="-E3" to="-E0"/>
-    <flow id="f_7_b1" begin="0.00" end="3600.00" vehsPerHour="180" from="-E3" to="E2"/>
+    <!-- A intensa / B leve (1800s a 7200s): Av.A=2400 veic/h, Av.B=300 veic/h por aproximacao -->
+    <flow id="f_E0_E2_1800" begin="1800.00" end="7200.00" vehsPerHour="1440" from="E0" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_E0_E1_1800" begin="1800.00" end="7200.00" vehsPerHour="960" from="E0" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_-E0_1800" begin="1800.00" end="7200.00" vehsPerHour="1440" from="-E1" to="-E0" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_E3_1800" begin="1800.00" end="7200.00" vehsPerHour="960" from="-E1" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E3_1800" begin="1800.00" end="7200.00" vehsPerHour="180" from="-E2" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E1_1800" begin="1800.00" end="7200.00" vehsPerHour="120" from="-E2" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_E2_1800" begin="1800.00" end="7200.00" vehsPerHour="180" from="-E3" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_-E0_1800" begin="1800.00" end="7200.00" vehsPerHour="120" from="-E3" to="-E0" departLane="best" departSpeed="max"/>
 
-    <!-- =================================================================== -->
-    <!-- BLOCO 2: PICO DA MANHÃ - INTENSO (3.600s a 9.000s - 1,5 Hora)       -->
-    <!-- =================================================================== -->
-    <!-- Eixo E0/E1 (Marginal Sentido Principal): ~3.200 veh/h no total -->
-    <flow id="f_0_b2" begin="3600.00" end="9000.00" vehsPerHour="1900" from="E0" to="E2"/>
-    <flow id="f_1_b2" begin="3600.00" end="9000.00" vehsPerHour="1300" from="E0" to="E1"/>
-    
-    <!-- Eixo Transversal (-E2): ~1.600 veh/h -->
-    <flow id="f_2_b2" begin="3600.00" end="9000.00" vehsPerHour="950" from="-E2" to="E3"/>
-    <flow id="f_3_b2" begin="3600.00" end="9000.00" vehsPerHour="650" from="-E2" to="E1"/>
-    
-    <!-- Eixo -E1/-E0 (Marginal Sentido Oposto): ~2.800 veh/h -->
-    <flow id="f_4_b2" begin="3600.00" end="9000.00" vehsPerHour="1600" from="-E1" to="-E0"/>
-    <flow id="f_5_b2" begin="3600.00" end="9000.00" vehsPerHour="1200" from="-E1" to="E3"/>
-    
-    <!-- Eixo Transversal (-E3): ~1.900 veh/h -->
-    <flow id="f_6_b2" begin="3600.00" end="9000.00" vehsPerHour="800" from="-E3" to="-E0"/>
-    <flow id="f_7_b2" begin="3600.00" end="9000.00" vehsPerHour="1100" from="-E3" to="E2"/>
+    <!-- Transicao 1/6 (7200s a 7800s): Av.A=2170 veic/h, Av.B=400 veic/h por aproximacao -->
+    <flow id="f_E0_E2_7200" begin="7200.00" end="7800.00" vehsPerHour="1302" from="E0" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_E0_E1_7200" begin="7200.00" end="7800.00" vehsPerHour="868" from="E0" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_-E0_7200" begin="7200.00" end="7800.00" vehsPerHour="1302" from="-E1" to="-E0" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_E3_7200" begin="7200.00" end="7800.00" vehsPerHour="868" from="-E1" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E3_7200" begin="7200.00" end="7800.00" vehsPerHour="240" from="-E2" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E1_7200" begin="7200.00" end="7800.00" vehsPerHour="160" from="-E2" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_E2_7200" begin="7200.00" end="7800.00" vehsPerHour="240" from="-E3" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_-E0_7200" begin="7200.00" end="7800.00" vehsPerHour="160" from="-E3" to="-E0" departLane="best" departSpeed="max"/>
 
-    <!-- =================================================================== -->
-    <!-- BLOCO 3: ENTREPICO / MEIO-DIA (9.000s a 12.600s - 1 Hora)            -->
-    <!-- =================================================================== -->
-    <flow id="f_0_b3" begin="9000.00" end="12600.00" vehsPerHour="850" from="E0" to="E2"/>
-    <flow id="f_1_b3" begin="9000.00" end="12600.00" vehsPerHour="600" from="E0" to="E1"/>
-    <flow id="f_2_b3" begin="9000.00" end="12600.00" vehsPerHour="400" from="-E2" to="E3"/>
-    <flow id="f_3_b3" begin="9000.00" end="12600.00" vehsPerHour="300" from="-E2" to="E1"/>
-    <flow id="f_4_b3" begin="9000.00" end="12600.00" vehsPerHour="750" from="-E1" to="-E0"/>
-    <flow id="f_5_b3" begin="9000.00" end="12600.00" vehsPerHour="550" from="-E1" to="E3"/>
-    <flow id="f_6_b3" begin="9000.00" end="12600.00" vehsPerHour="350" from="-E3" to="-E0"/>
-    <flow id="f_7_b3" begin="9000.00" end="12600.00" vehsPerHour="450" from="-E3" to="E2"/>
+    <!-- Transicao 2/6 (7800s a 8400s): Av.A=1830 veic/h, Av.B=600 veic/h por aproximacao -->
+    <flow id="f_E0_E2_7800" begin="7800.00" end="8400.00" vehsPerHour="1098" from="E0" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_E0_E1_7800" begin="7800.00" end="8400.00" vehsPerHour="732" from="E0" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_-E0_7800" begin="7800.00" end="8400.00" vehsPerHour="1098" from="-E1" to="-E0" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_E3_7800" begin="7800.00" end="8400.00" vehsPerHour="732" from="-E1" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E3_7800" begin="7800.00" end="8400.00" vehsPerHour="360" from="-E2" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E1_7800" begin="7800.00" end="8400.00" vehsPerHour="240" from="-E2" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_E2_7800" begin="7800.00" end="8400.00" vehsPerHour="360" from="-E3" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_-E0_7800" begin="7800.00" end="8400.00" vehsPerHour="240" from="-E3" to="-E0" departLane="best" departSpeed="max"/>
 
-    <!-- =================================================================== -->
-    <!-- BLOCO 4: PICO DA TARDE / SATURAÇÃO (12.600s a 18.000s - 1,5 Hora)   -->
-    <!-- =================================================================== -->
-    <!-- Inversão de fluxo forte (Marginal Sentido Bairro/Saída): ~3.600 veh/h -->
-    <flow id="f_0_b4" begin="12600.00" end="18000.00" vehsPerHour="1400" from="E0" to="E2"/>
-    <flow id="f_1_b4" begin="12600.00" end="18000.00" vehsPerHour="1000" from="E0" to="E1"/>
-    
-    <flow id="f_2_b4" begin="12600.00" end="18000.00" vehsPerHour="800" from="-E2" to="E3"/>
-    <flow id="f_3_b4" begin="12600.00" end="18000.00" vehsPerHour="600" from="-E2" to="E1"/>
-    
-    <!-- Fluxo crítico na via oposta -->
-    <flow id="f_4_b4" begin="12600.00" end="18000.00" vehsPerHour="2200" from="-E1" to="-E0"/>
-    <flow id="f_5_b4" begin="12600.00" end="18000.00" vehsPerHour="1400" from="-E1" to="E3"/>
-    
-    <flow id="f_6_b4" begin="12600.00" end="18000.00" vehsPerHour="900" from="-E3" to="-E0"/>
-    <flow id="f_7_b4" begin="12600.00" end="18000.00" vehsPerHour="1200" from="-E3" to="E2"/>
+    <!-- Transicao 3/6 (8400s a 9000s): Av.A=1500 veic/h, Av.B=800 veic/h por aproximacao -->
+    <flow id="f_E0_E2_8400" begin="8400.00" end="9000.00" vehsPerHour="900" from="E0" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_E0_E1_8400" begin="8400.00" end="9000.00" vehsPerHour="600" from="E0" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_-E0_8400" begin="8400.00" end="9000.00" vehsPerHour="900" from="-E1" to="-E0" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_E3_8400" begin="8400.00" end="9000.00" vehsPerHour="600" from="-E1" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E3_8400" begin="8400.00" end="9000.00" vehsPerHour="480" from="-E2" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E1_8400" begin="8400.00" end="9000.00" vehsPerHour="320" from="-E2" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_E2_8400" begin="8400.00" end="9000.00" vehsPerHour="480" from="-E3" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_-E0_8400" begin="8400.00" end="9000.00" vehsPerHour="320" from="-E3" to="-E0" departLane="best" departSpeed="max"/>
+
+    <!-- Transicao 4/6 (9000s a 9600s): Av.A=1170 veic/h, Av.B=1000 veic/h por aproximacao -->
+    <flow id="f_E0_E2_9000" begin="9000.00" end="9600.00" vehsPerHour="702" from="E0" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_E0_E1_9000" begin="9000.00" end="9600.00" vehsPerHour="468" from="E0" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_-E0_9000" begin="9000.00" end="9600.00" vehsPerHour="702" from="-E1" to="-E0" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_E3_9000" begin="9000.00" end="9600.00" vehsPerHour="468" from="-E1" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E3_9000" begin="9000.00" end="9600.00" vehsPerHour="600" from="-E2" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E1_9000" begin="9000.00" end="9600.00" vehsPerHour="400" from="-E2" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_E2_9000" begin="9000.00" end="9600.00" vehsPerHour="600" from="-E3" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_-E0_9000" begin="9000.00" end="9600.00" vehsPerHour="400" from="-E3" to="-E0" departLane="best" departSpeed="max"/>
+
+    <!-- Transicao 5/6 (9600s a 10200s): Av.A=830 veic/h, Av.B=1200 veic/h por aproximacao -->
+    <flow id="f_E0_E2_9600" begin="9600.00" end="10200.00" vehsPerHour="498" from="E0" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_E0_E1_9600" begin="9600.00" end="10200.00" vehsPerHour="332" from="E0" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_-E0_9600" begin="9600.00" end="10200.00" vehsPerHour="498" from="-E1" to="-E0" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_E3_9600" begin="9600.00" end="10200.00" vehsPerHour="332" from="-E1" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E3_9600" begin="9600.00" end="10200.00" vehsPerHour="720" from="-E2" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E1_9600" begin="9600.00" end="10200.00" vehsPerHour="480" from="-E2" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_E2_9600" begin="9600.00" end="10200.00" vehsPerHour="720" from="-E3" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_-E0_9600" begin="9600.00" end="10200.00" vehsPerHour="480" from="-E3" to="-E0" departLane="best" departSpeed="max"/>
+
+    <!-- Transicao 6/6 (10200s a 10800s): Av.A=500 veic/h, Av.B=1400 veic/h por aproximacao -->
+    <flow id="f_E0_E2_10200" begin="10200.00" end="10800.00" vehsPerHour="300" from="E0" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_E0_E1_10200" begin="10200.00" end="10800.00" vehsPerHour="200" from="E0" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_-E0_10200" begin="10200.00" end="10800.00" vehsPerHour="300" from="-E1" to="-E0" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_E3_10200" begin="10200.00" end="10800.00" vehsPerHour="200" from="-E1" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E3_10200" begin="10200.00" end="10800.00" vehsPerHour="840" from="-E2" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E1_10200" begin="10200.00" end="10800.00" vehsPerHour="560" from="-E2" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_E2_10200" begin="10200.00" end="10800.00" vehsPerHour="840" from="-E3" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_-E0_10200" begin="10200.00" end="10800.00" vehsPerHour="560" from="-E3" to="-E0" departLane="best" departSpeed="max"/>
+
+    <!-- A leve / B intensa (10800s a 16200s): Av.A=400 veic/h, Av.B=1500 veic/h por aproximacao -->
+    <flow id="f_E0_E2_10800" begin="10800.00" end="16200.00" vehsPerHour="240" from="E0" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_E0_E1_10800" begin="10800.00" end="16200.00" vehsPerHour="160" from="E0" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_-E0_10800" begin="10800.00" end="16200.00" vehsPerHour="240" from="-E1" to="-E0" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_E3_10800" begin="10800.00" end="16200.00" vehsPerHour="160" from="-E1" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E3_10800" begin="10800.00" end="16200.00" vehsPerHour="900" from="-E2" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E1_10800" begin="10800.00" end="16200.00" vehsPerHour="600" from="-E2" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_E2_10800" begin="10800.00" end="16200.00" vehsPerHour="900" from="-E3" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_-E0_10800" begin="10800.00" end="16200.00" vehsPerHour="600" from="-E3" to="-E0" departLane="best" departSpeed="max"/>
+
+    <!-- Encerramento (16200s a 18000s): Av.A=800 veic/h, Av.B=600 veic/h por aproximacao -->
+    <flow id="f_E0_E2_16200" begin="16200.00" end="18000.00" vehsPerHour="480" from="E0" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_E0_E1_16200" begin="16200.00" end="18000.00" vehsPerHour="320" from="E0" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_-E0_16200" begin="16200.00" end="18000.00" vehsPerHour="480" from="-E1" to="-E0" departLane="best" departSpeed="max"/>
+    <flow id="f_-E1_E3_16200" begin="16200.00" end="18000.00" vehsPerHour="320" from="-E1" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E3_16200" begin="16200.00" end="18000.00" vehsPerHour="360" from="-E2" to="E3" departLane="best" departSpeed="max"/>
+    <flow id="f_-E2_E1_16200" begin="16200.00" end="18000.00" vehsPerHour="240" from="-E2" to="E1" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_E2_16200" begin="16200.00" end="18000.00" vehsPerHour="360" from="-E3" to="E2" departLane="best" departSpeed="max"/>
+    <flow id="f_-E3_-E0_16200" begin="16200.00" end="18000.00" vehsPerHour="240" from="-E3" to="-E0" departLane="best" departSpeed="max"/>
 
 </routes>
