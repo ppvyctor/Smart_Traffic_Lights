@@ -35,7 +35,7 @@ NET_FILE = r"Sumo Settings\teste.net.xml"             # Rede viária (interseç�
 ROUTE_FILE = r"Sumo Settings\teste.rou.xml"           # Arquivo de rotas/veículos dinâmico
 
 TEMPO_SIMULACAO = 18000                # Duração de cada episódio em segundos (5 horas)
-PASSOS_TREINAMENTO = 4_000_000         # Total de passos de treinamento (aumentado)
+PASSOS_TREINAMENTO = 1_500_000         # Total de passos de treinamento (aumentado)
 
 DELTA_TIME = 5                         # Intervalo (em segundos) entre decisões do agente
 
@@ -90,7 +90,7 @@ class EntropyScheduleCallback(BaseCallback):
     começa mais exploratório e termina mais determinístico.
     """
     def __init__(self, initial: float = 0.02, final: float = 0.001,
-                 total_timesteps: int = 4_000_000, verbose=0):
+                 total_timesteps: int = PASSOS_TREINAMENTO, verbose=0):
         super().__init__(verbose)
         self.initial = initial
         self.final = final
